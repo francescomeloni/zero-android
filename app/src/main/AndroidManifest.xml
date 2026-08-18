@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="it.sublima.zeroandroid"><!--
+    Nessuna versione dichiarata qui, e di proposito: la mette lo script di
+    costruzione leggendola da Versione.NUMERO. Scritta anche qui sarebbe una
+    seconda copia a mano dello stesso numero, e prima o poi divergerebbe da
+    quella che Sublima legge in /test_zero.
+-->
+
+    <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="34" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- Tiene sveglio il Wi-Fi: senza, il telefono lo addormenta e le comande
+         smettono di arrivare mentre lo schermo e' spento. -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- Il servizio deve restare in piedi anche con l'app chiusa. -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <!-- Da Android 14 il tipo va dichiarato: qui si parla con stampanti, che
+         sono dispositivi esterni. -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE" />
+    <!-- Non serve al codice: il tipo connectedDevice pretende anche una fra le
+         permission "attive" (bluetooth/usb/nfc/change_wifi), altrimenti
+         startForeground muore con SecurityException. -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <!-- usesCleartextTraffic: da targetSdk 28 Android vieta l'http in chiaro, e
+         registratori Epson/Custom e il richiamo a Sublima parlano tutti http su
+         IP di LAN. Senza, falliscono solo quei tre: le comande ESC/POS passano
+         lo stesso perche' sono socket grezzi. -->
+    <application
+        android:label="@string/nome_app"
+        android:icon="@mipmap/ic_launcher"
+        android:allowBackup="false"
+        android:supportsRtl="false"
+        android:usesCleartextTraffic="true">
+
+        <activity
+            android:name=".Schermata"
+            android:exported="true"
+            android:label="@string/nome_app"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".Servizio"
+            android:exported="false"
+            android:foregroundServiceType="connectedDevice" />
+
+        <receiver
+            android:name=".AvvioAlBoot"
+            android:exported="true"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>
+    </application>
+</manifest>

@@ -1,0 +1,21 @@
+# Prodotti della compilazione
+build/
+*.class
+*.dex
+*.apk
+*.idsig
+
+# Casi di prova: si rigenerano con  python3 test/genera_casi.py
+test/casi/
+
+# Chiavi di firma: non entrano mai nel repo
+*.jks
+*.keystore
+
+# Ambienti e strumenti
+.idea/
+.gradle/
+local.properties
+*.iml
+__pycache__/
+*.pyc
