@@ -73,10 +73,13 @@ arriva davvero da una stampa.
 
     ./tools/prova.sh
 
-277 controlli su JVM, senza emulatore ne' hardware: stampante, registratore
+286 controlli su JVM, senza emulatore ne' hardware: stampante, registratore
 Micrelec, registratori HTTP, terminale POS e Sublima finti, piu' i casi di
 errore. I lavori di prova li costruisce Python con gli stessi `zipfile` e
 `pickle` che usa Sublima.
+
+Il numero qui sopra e' gia' rimasto indietro due volte: se lo trovi diverso da
+quello che stampa `./tools/prova.sh`, ha ragione lo script.
 
 ## Costruire l'APK
 
