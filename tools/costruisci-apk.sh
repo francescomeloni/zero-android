@@ -6,7 +6,7 @@
 # Usa solo quello che c'e' gia' nell'SDK: aapt2 -> javac -> d8 -> zipalign ->
 # apksigner. Niente da scaricare, niente rete: funziona oggi e fra due anni.
 #
-# La chiave di firma si cerca in KEYSTORE (o in ~/.zero_android/firma.jks) e, se
+# La chiave di firma si cerca in KEYSTORE (o in ~/.sublima_chiavi/zero_android/firma.jks) e, se
 # non c'e', se ne genera una di sviluppo.
 #
 # ⚠ Cambiare chiave su un'app gia' installata obbliga a disinstallarla prima,
@@ -21,8 +21,11 @@ API="${API:-34}"
 BT="$SDK/build-tools/${BUILD_TOOLS:-34.0.0}"
 JAR="$SDK/platforms/android-$API/android.jar"
 
-KEYSTORE="${KEYSTORE:-$HOME/.zero_android/firma.jks}"
-KEYPASS="${KEYPASS:-zeroandroid}"
+KEYSTORE="${KEYSTORE:-$HOME/.sublima_chiavi/zero_android/firma.jks}"
+# la password del portachiavi non sta nel repository: variabile KEYPASS, oppure il file
+# "password" accanto al portachiavi (~/.sublima_chiavi/zero_android/)
+KEYPASS="${KEYPASS:-$(cat "$(dirname "$KEYSTORE")/password" 2>/dev/null)}"
+[ -n "$KEYPASS" ] || { echo "Manca la password del portachiavi: KEYPASS o $(dirname "$KEYSTORE")/password"; exit 1; }
 KEYALIAS="${KEYALIAS:-zero}"
 
 for strumento in "$BT/aapt2" "$BT/d8" "$BT/apksigner" "$BT/zipalign"; do

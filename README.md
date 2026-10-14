@@ -88,7 +88,7 @@ quello che stampa `./tools/prova.sh`, ha ragione lo script.
 Non serve Gradle ne' Android Studio: solo `aapt2`, `javac`, `d8` e `apksigner`,
 che sono gia' nell'SDK. Niente da scaricare.
 
-La chiave di firma si cerca in `~/.zero_android/firma.jks`; se non c'e' ne viene
+La chiave di firma si cerca in `~/.sublima_chiavi/zero_android/firma.jks`; se non c'e' ne viene
 generata una di sviluppo. **Conservala**: cambiare chiave su un'app gia'
 installata obbliga a disinstallarla, perdendo la configurazione.
 
